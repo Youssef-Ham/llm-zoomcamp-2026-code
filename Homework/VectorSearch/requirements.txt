@@ -1,0 +1,7 @@
+numpy>=2.0
+onnxruntime>=1.27.0
+tokenizers>=0.22
+tqdm>=4.67
+minsearch
+huggingface-hub
+gitsource

@@ -48,7 +48,18 @@ print(f"Q2: Cosine similarity = {cos_sim:.4f}  → Closest option: 0.37")
 # ── Q3. Chunking and search by hand ───────────────────────────────────
 chunks = chunk_documents(documents, size=2000, step=1000)
 chunk_texts = [c["content"] for c in chunks]
-X = embedder.encode_batch(chunk_texts)
+#X = embedder.encode_batch(chunk_texts)
+
+batch_size = 32
+vectors = []
+
+for i in range(0, len(chunk_texts), batch_size):
+    batch = chunk_texts[i:i + batch_size]
+    batch_vectors = embedder.encode_batch(batch)
+    vectors.extend(batch_vectors)
+
+X = np.array(vectors)
+
 scores = X @ v
 top_idx = int(np.argmax(scores))
 top_chunk = chunks[top_idx]
