@@ -1,6 +1,9 @@
 
 
 
+from urllib import response
+
+
 INSTRUCTIONS = """
 Your task is to answer questions from the course participants
 based on the provided context.
@@ -27,7 +30,7 @@ class RAGBase:
         instructions=INSTRUCTIONS,
         prompt_template=PROMPT_TEMPLATE,
         course="llm-zoomcamp",
-        model="poolside/laguna-m.1:free"
+        model="openai/gpt-oss-120b"
     ):
         self.index = index
         self.llm_client = llm_client
@@ -72,13 +75,13 @@ class RAGBase:
             {"role": "user", "content": prompt}
         ]
 
-        response = self.llm_client.responses.create(
+        response = self.llm_client.chat.completions.create(
             model=self.model,
-            input=input_messages,
-            max_output_tokens=300
+            messages=input_messages,
+            max_tokens=300
         )
+        return response.choices[0].message.content
 
-        return response.output_text
         
         
      
